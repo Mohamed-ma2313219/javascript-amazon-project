@@ -24,6 +24,15 @@ const products = [{
             count: 56
         },
         priceCents: 799
+    },
+    {
+        image: "images/products/GoldHunter.png",
+        name: "GoldHunter",
+        rating: {
+            rate: 4.5,
+            count: 56
+        },
+        priceCents: 20000
     }
 ];
 let productsHTML = ``;
@@ -46,11 +55,11 @@ products.forEach(product => {
         </div>
 
         <div class="product-price">
-            ${product.priceCents / 100}
-    </div>
+            $${(product.priceCents / 100).toFixed(2)}
+        </div>
 
-    <div class="product-quantity-container">
-        <select>
+        <div class="product-quantity-container">
+            <select>
   <option selected value="1">1</option>
   <option value="2">2</option>
   <option value="3">3</option>
@@ -62,19 +71,44 @@ products.forEach(product => {
   <option value="9">9</option>
   <option value="10">10</option>
 </select>
+        </div>
+
+        <div class="product-spacer"></div>
+
+        <div class="added-to-cart">
+            <img src="images/icons/checkmark.png"> Added
+        </div>
+
+        <button class="add-to-cart-button button-primary js-add-to-cart"
+        data-product-name="${product.name}"
+        data-product-quantity="1">
+            Add to Cart
+        </button>
     </div>
-
-    <div class="product-spacer"></div>
-
-    <div class="added-to-cart">
-        <img src="images/icons/checkmark.png"> Added
-    </div>
-
-    <button class="add-to-cart-button button-primary">
-Add to Cart
-</button>
-</div>
 `;
 });
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
+
+document.querySelectorAll('.js-add-to-cart').forEach(button => {
+    button.addEventListener('click', () => {
+        const productName = button.dataset.productName;
+        const productQuantity = Number(button.dataset.productQuantity);
+
+        let found = false;
+        cart.forEach(item => {
+            if (item.productName === productName) {
+                item.productQuantity += productQuantity;
+                found = true;
+            }
+        });
+
+        if (!found) {
+            cart.push({
+                productName,
+                productQuantity
+            });
+        }
+        console.log(cart);
+    });
+});

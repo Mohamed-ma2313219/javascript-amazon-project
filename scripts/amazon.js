@@ -90,12 +90,14 @@ products.forEach(product => {
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
+let allProductsQuantities = 0;
 document.querySelectorAll('.js-add-to-cart').forEach(button => {
     button.addEventListener('click', () => {
         const productName = button.dataset.productName;
         const productQuantity = Number(button.dataset.productQuantity);
 
         let found = false;
+        allProductsQuantities += productQuantity;
         cart.forEach(item => {
             if (item.productName === productName) {
                 item.productQuantity += productQuantity;
@@ -109,6 +111,6 @@ document.querySelectorAll('.js-add-to-cart').forEach(button => {
                 productQuantity
             });
         }
-        console.log(cart);
+        document.querySelector('.js-cart-quantity').innerHTML = allProductsQuantities;
     });
 });

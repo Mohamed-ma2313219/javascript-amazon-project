@@ -23,7 +23,7 @@ export function addToCart(productName, productQuantity) {
 export function removeFromCart(productName) {
     const newCart = [];
     cart.forEach((cartItem) => {
-        if (cartItem.productName !== productName) {
+        if (cartItem.name !== productName) {
             newCart.push(cartItem);
         }
     });

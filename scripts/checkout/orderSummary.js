@@ -3,7 +3,7 @@ import { products } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import DayJs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import { deliveryOptions } from "../../data/deliveryOptions.Js";
-
+import { renderPaymentSummary } from "./pymentSumary.js";
 
 
 export function renderOrderSummary() {
@@ -78,9 +78,9 @@ export function renderOrderSummary() {
         deliveryOptions.forEach((deliveryOption) => {
             const dateString = today.add(deliveryOption.deliveryDays, 'days').format('dddd, MMMM D');
 
-            const priceString = deliveryOption.priceCents === 0 ?
+            const priceString = deliveryOption.price === 0 ?
                 "FREE Shipping" :
-                `${formatCurrency(deliveryOption.priceCents)} - Shipping`; // Changed price to priceCents
+                `${formatCurrency(deliveryOption.price)} - Shipping`; // Changed price to priceCents
 
             const isChecked = deliveryOption.deliveryName === item.deliveryName;
 
@@ -114,6 +114,7 @@ export function renderOrderSummary() {
 
             const container = document.querySelector(`.js-cart-item-container-${productName[0,1]}`);
             container.remove();
+            renderPaymentSummary();
         });
     });
     document.querySelectorAll(".js-delivery-option").forEach((element) => {
@@ -121,6 +122,7 @@ export function renderOrderSummary() {
             const { deliveryName, itemName } = element.dataset;
             updateDeliveryOption(itemName, deliveryName);
             renderOrderSummary();
+            renderPaymentSummary();
         })
     })
 }
